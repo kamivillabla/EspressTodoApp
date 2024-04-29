@@ -40,7 +40,6 @@ Crea un archivo .env en la raíz del backend con las siguientes variables de ent
 
 ```
 PORT=5000
-
 ```
 
 Para iniciar el servidor de desarrollo con nodemon para recarga automática:
@@ -56,7 +55,7 @@ El servidor debería estar ahora corriendo en http://localhost:5000.
 Regresa a la raíz del proyecto y navega a la carpeta del frontend:
 
 ```
-cd ...
+cd ..
 cd frontend-app
 ```
 
@@ -64,7 +63,6 @@ instala las dependencias
 
 ```
 npm install
-
 ```
 
 Inicia la aplicación frontend
