@@ -1,18 +1,19 @@
 # Todo App
 
-Este proyecto consiste en una aplicación Todo con un backend desarrollado en Node.js utilizando Express y con frontend en reactJS.
+Este proyecto consiste en una aplicación Todo con un backend desarrollado en Node.js utilizando Express y MySQL, y con frontend en ReactJS.
 
 ## Características
 
 - Crear, leer, actualizar y eliminar tareas (CRUD).
 - Interfaz de usuario para interactuar con las tareas.
-- Backend RESTful para gestionar las tareas.
+- Backend RESTful para gestionar las tareas utilizando MySQL.
 
 ## Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalado lo siguiente:
 
 - [Node.js](https://nodejs.org/) (Se recomienda Node.js v14.x o superior)
+- [MySQL](https://dev.mysql.com/downloads/mysql/) (Configurado y ejecutándose en tu máquina)
 
 ## Instalación
 
@@ -25,6 +26,7 @@ Para obtener el proyecto, primero clona este repositorio en tu máquina local:
 ```bash
 git clone https://github.com/kamivillabla/ExpressTodoApp
 cd ExpressTodoApp
+
 ```
 
 ### Configurar el Backend
@@ -40,6 +42,11 @@ Crea un archivo .env en la raíz del backend con las siguientes variables de ent
 
 ```
 PORT=5000
+MYSQL_HOST=localhost
+MYSQL_USER=tu_usuario_mysql
+MYSQL_PASSWORD=tu_contraseña_mysql
+MYSQL_DATABASE=nombre_de_tu_base_de_datos_mysql
+MYSQL_PORT=xxxx
 
 ```
 

@@ -42,7 +42,6 @@ const useTodos = () => {
       alert('Algo salió mal al intentar eliminar el todo');
     }
   }, []);
-
   const updateTodo = useCallback(
     async (id, title, done) => {
       const updatedTodo = { title, done };
@@ -61,7 +60,6 @@ const useTodos = () => {
     },
     [todos]
   );
-
   const toggleCompletion = useCallback(
     async (id) => {
       const todoToUpdate = todos.find((t) => t.id === id);

@@ -5,7 +5,7 @@ const Todo = ({ todo, removeTodo, updateTodo, toggleCompletion }) => {
   const [editTitle, setEditTitle] = useState(todo.title);
 
   const handleUpdate = () => {
-    updateTodo(todo.id, editTitle); // Actualiza sólo el título
+    updateTodo(todo.id, editTitle, todo.done);
     setIsEditing(false);
   };
 

@@ -3,12 +3,13 @@ import { writeFile, readFile } from 'node:fs/promises';
 import { nanoid } from 'nanoid';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { todoModel } from './models/todo.model.js';
 
 dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware para parsear el cuerpo de las peticiones
 app.use(express.json());
@@ -33,102 +34,72 @@ const saveTodos = async (todos) => {
 
 app.get('/todos', async (req, res) => {
   try {
-    const todos = await getTodos();
-    res.json(todos);
+    const todos = await todoModel.findAll();
+    return res.json(todos);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Failed to retrieve todos', error: error.toString() });
+    console.log(error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 app.get('/todos/:id', async (req, res) => {
+  const id = req.params.id;
   try {
-    const id = req.params.id;
-    const todos = await getTodos();
-    const todo = todos.find((todo) => todo.id === id);
-
+    const todo = await todoModel.findById(id);
     if (!todo) {
-      return res.status(404).json({ message: 'Todo not found' });
+      res.status(404).json({ message: 'Todo not found' });
     }
     res.json(todo);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Failed to retrieve todo', error: error.toString() });
+    console.log(error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 app.post('/todos', async (req, res) => {
+  const { title } = req.body;
+  if (!title) {
+    return res.status(400).json({ message: 'Title is required' });
+  }
+  const newTodo = {
+    title,
+    done: false,
+  };
   try {
-    const { title } = req.body;
-    if (!title) {
-      return res.status(400).json({ message: 'Title is required' });
-    }
-
-    const newTodo = {
-      id: nanoid(),
-      title,
-      done: false,
-    };
-
-    let todos = await getTodos();
-    todos.push(newTodo);
-    await saveTodos(todos);
-    res.status(201).json(newTodo);
+    const todo = await todoModel.create(newTodo);
+    return res.json(todo);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Failed to create todo', error: error.toString() });
+    console.log(error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 app.put('/todos/:id', async (req, res) => {
+  const id = req.params.id;
+  const { title, done } = req.body;
   try {
-    const { id } = req.params;
-    const { title, done } = req.body;
-
-    let todos = await getTodos();
-    const index = todos.findIndex((todo) => todo.id === id);
-
-    if (index === -1) {
+    const todo = await todoModel.update(id, title, done);
+    if (!todo) {
       return res.status(404).json({ message: 'Todo not found' });
     }
-
-    const updatedTodo = {
-      ...todos[index],
-      ...(title !== undefined && { title }),
-      ...(done !== undefined && { done }),
-    };
-
-    todos[index] = updatedTodo;
-    await saveTodos(todos);
-    res.json(updatedTodo);
+    return res.json(todo);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Failed to update todo', error: error.toString() });
+    console.log(error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 app.delete('/todos/:id', async (req, res) => {
+  const id = req.params.id;
   try {
-    const id = req.params.id;
-
-    let todos = await getTodos();
-    const index = todos.findIndex((todo) => todo.id === id);
-
-    if (index === -1) {
-      return res.status(404).json({ message: 'No existen notas' });
+    const todo = await todoModel.remove(id);
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' });
     }
-
-    todos.splice(index, 1);
-    await saveTodos(todos);
-    res.json({ message: 'Todo deleted successfully' });
+    return res.json({ message: 'Todo deleted' });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Failed to delete todo', error: error.toString() });
+    console.log(error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
