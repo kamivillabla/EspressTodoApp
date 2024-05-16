@@ -63,7 +63,7 @@ El servidor debería estar ahora corriendo en http://localhost:5000.
 Regresa a la raíz del proyecto y navega a la carpeta del frontend:
 
 ```
-cd ...
+cd ..
 cd frontend-app
 ```
 
@@ -71,7 +71,6 @@ instala las dependencias
 
 ```
 npm install
-
 ```
 
 Inicia la aplicación frontend
